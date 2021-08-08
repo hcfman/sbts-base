@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Copyright (c) 2021 Kim Hendrikse
+
 if [ "$(egrep -v '^[[:space:]]*#' /boot/extlinux/extlinux.conf|awk '/^LABEL.*primary/,/^$/ {print}' | grep 'APPEND.*init='| tr ' ' '\n' | fgrep 'init=' | sed -e 's/^init=//')" != "/sbin/overlayRoot.sh" ] ; then
     exec /lib/systemd/systemd
 fi

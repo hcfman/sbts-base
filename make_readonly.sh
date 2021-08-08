@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Copyright (c) 2021 Kim Hendrikse
+
 HERE=$(dirname $0)
 cd $HERE || abort "Can't change to script directory"
 HERE=`/bin/pwd`
