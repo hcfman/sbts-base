@@ -386,8 +386,8 @@ copy_system_disk_to_SSD() {
 update_fstab() {
     cat > /tmp/mnt/etc/fstab <<EOF
 # <file system> <mount point>             <type>          <options>                               <dump> <pass>
-LABEL=SbtsConfig     /home/sbts/config     ext4           noatime                                     0 2
-LABEL=SbtsDisk       /home/sbts/disk       ext4           noatime                                     0 2
+${partition_base_path}2     /home/sbts/config     ext4           noatime                                     0 2
+${partition_base_path}3       /home/sbts/disk       ext4           noatime                                     0 2
 #the original root mount has been removed by overlayRoot.sh
 #this is only a temporary modification, the original fstab
 #stored on the disk can be found in /ro/etc/fstab
