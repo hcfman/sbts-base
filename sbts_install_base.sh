@@ -418,8 +418,10 @@ disable_docker() {
     echo "Disable docker"
     echo ""
 
-    systemctl stop docker
-    systemctl disable docker
+    systemctl stop docker.service
+    systemctl disable docker.service
+    systemctl stop docker.socket
+    systemctl disable docker.socket
 }
 
 #
