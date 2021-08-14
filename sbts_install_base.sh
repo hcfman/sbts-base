@@ -471,4 +471,9 @@ make_readonly
 
 echo ""
 echo "Installation was successful"
-echo "Please reboot"
+echo "Rebooting in 10 seconds..."
+echo ""
+
+sleep 10
+
+reboot
