@@ -33,6 +33,7 @@ if [ "$found_init" != "/sbin/overlayRoot.sh" -a ! -z "$found_sbtsroot" ] ; then
     mount --move /mnt/dev /dev
 
     rmdir /mnt/mnt/newroot
+    umount /mnt/proc
     umount /mnt
 
     # Should be the same as what /sbin/init used to link to
@@ -105,6 +106,7 @@ mount --move /mnt/sys /sys
 mount --move /mnt/dev /dev
 
 umount /mnt/mnt
+umount /mnt/proc
 umount /mnt
 
 # continue with regular init
