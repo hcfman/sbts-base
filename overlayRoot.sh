@@ -77,7 +77,7 @@ mkdir /mnt/newroot/ro
 mkdir /mnt/newroot/rw
 
 # remove root mount from fstab (this is already a non-permanent modification)
-grep -v "/dev/root" /mnt/lower/etc/fstab > /mnt/newroot/etc/fstab
+awk '{if ($0 ~ /^#/ || $2 != "/") print}' /mnt/lower/etc/fstab > /mnt/newroot/etc/fstab
 
 # HACK #  > /mnt/newroot/etc/fstab
 echo "#the original root mount has been removed by overlayRoot.sh" >> /mnt/newroot/etc/fstab
