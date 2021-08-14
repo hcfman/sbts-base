@@ -408,10 +408,7 @@ unmount_system_disk() {
 }
 
 make_readonly() {
-    "$SBTS_BIN/make_readonly.sh"
-
-    echo ""
-    echo "Please reboot"
+    "$SBTS_BIN/make_readonly.sh" || abort "Can't set readonly"
 }
 
 disable_docker() {
@@ -472,3 +469,7 @@ disable_docker
 unmount_system_disk
 
 make_readonly
+
+echo ""
+echo "Installation was successful"
+echo "Please reboot"

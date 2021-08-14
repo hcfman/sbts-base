@@ -1,67 +1,51 @@
 #!/bin/sh
 
 # Copyright (c) 2021 Kim Hendrikse
+# Inspired by and based in part on this work http://wiki.psuter.ch/doku.php?id=solve_raspbian_sd_card_corruption_issues_with_read-only_mounted_root_partition
 
-if [ "$(egrep -v '^[[:space:]]*#' /boot/extlinux/extlinux.conf|awk '/^LABEL.*primary/,/^$/ {print}' | grep 'APPEND.*init='| tr ' ' '\n' | fgrep 'init=' | sed -e 's/^init=//')" != "/sbin/overlayRoot.sh" ] ; then
+#
+# Jetson Xavier AGX version
+#
+
+fail(){
+	echo -e "$1"
+	exec /bin/bash
+}
+ 
+found_root=$(tr '\0 ' '\n\n' < /proc/cmdline|perl -n -e 'print $1, "\n" if m%^root=(\S+)%')
+found_init=$(tr '\0 ' '\n\n' < /proc/cmdline|perl -n -e 'print $1, "\n" if m%^init=(\S+)%')
+found_sbtsroot=$(tr '\0 ' '\n\n' < /proc/cmdline|perl -n -e 'print $1, "\n" if m%^sbtsroot=(\S+)%')
+
+if [ "$found_init" != "/sbin/overlayRoot.sh" -a -z "$found_sbtsroot" ] ; then
     exec /lib/systemd/systemd
 fi
 
-#  Read-only Root-FS for Raspian using overlayfs
-#  Version 1.1
-#
-#  Version History:
-#  1.0: initial release
-#  1.1: adopted new fstab style with PARTUUID. the script will now look for a /dev/xyz definiton first 
-#       (old raspbian), if that is not found, it will look for a partition with LABEL=rootfs, if that
-#       is not found it look for a PARTUUID string in fstab for / and convert that to a device name
-#       using the blkid command. 
-#
-#  Created 2017 by Pascal Suter @ DALCO AG, Switzerland to work on Raspian as custom init script
-#  (raspbian does not use an initramfs on boot)
-#
-#  This program is free software: you can redistribute it and/or modify
-#  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation, either version 3 of the License, or
-#  (at your option) any later version.
-#
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
-#
-#    You should have received a copy of the GNU General Public License
-#    along with this program.  If not, see
-#    <http://www.gnu.org/licenses/>.
-#
-#
-#  Tested with Raspbian mini, 2018-10-09
-#
-#  This script will mount the root filesystem read-only and overlay it with a temporary tempfs 
-#  which is read-write mounted. This is done using the overlayFS which is part of the linux kernel 
-#  since version 3.18. 
-#  when this script is in use, all changes made to anywhere in the root filesystem mount will be lost 
-#  upon reboot of the system. The SD card will only be accessed as read-only drive, which significantly
-#  helps to prolong its life and prevent filesystem coruption in environments where the system is usually
-#  not shut down properly 
-#
-#  Install: 
-#  copy this script to /sbin/overlayRoot.sh, make it executable and add "init=/sbin/overlayRoot.sh" to the 
-#  cmdline.txt file in the raspbian image's boot partition. 
-#  I strongly recommend to disable swapping before using this. it will work with swap but that just does 
-#  not make sens as the swap file will be stored in the tempfs which again resides in the ram.
-#  run these commands on the booted raspberry pi BEFORE you set the init=/sbin/overlayRoot.sh boot option:
-#  sudo dphys-swapfile swapoff
-#  sudo dphys-swapfile uninstall
-#  sudo update-rc.d dphys-swapfile remove
-#
-#  To install software, run upgrades and do other changes to the raspberry setup, simply remove the init= 
-#  entry from the cmdline.txt file and reboot, make the changes, add the init= entry and reboot once more. 
- 
-fail(){
-	echo -e "$1"
-	/bin/bash
-}
- 
+if [ "$found_init" != "/sbin/overlayRoot.sh" -a ! -z "$found_sbtsroot" ] ; then
+    mkdir /mnt/newroot || fail "Can't create /mnt/newroot"
+
+    mount $found_sbtsroot /mnt/newroot || fail "Can't mount $found_sbtsroot on /mnt"
+
+    cd /mnt/newroot || fail "Can't change to /mnt/newroot"
+    pivot_root . mnt
+    exec chroot . sh -c "$(cat <<END
+    mount --move /mnt/proc /proc
+    mount --move /mnt/sys /sys
+    mount --move /mnt/dev /dev
+
+    rmdir /mnt/mnt/newroot
+    umount /mnt
+
+    # Should be the same as what /sbin/init used to link to
+    exec /lib/systemd/systemd
+END
+    )"
+
+fi
+
+if [ -z "$found_sbtsroot" ] ; then
+    found_sbtsroot=$found_root
+fi
+
 # load module
 modprobe overlay
 if [ $? -ne 0 ]; then
@@ -87,7 +71,7 @@ mkdir /mnt/rw/upper
 mkdir /mnt/rw/work
 mkdir /mnt/newroot
 # mount root filesystem readonly 
-rootDev=/dev/nvme0n1p1
+rootDev=$found_sbtsroot
 rootMountOpt=defaults
 rootFsType=ext4
 mount -t ${rootFsType} -o ${rootMountOpt},ro ${rootDev} /mnt/lower
@@ -127,7 +111,6 @@ fi
 mount --move /mnt/proc /proc
 mount --move /mnt/sys /sys
 mount --move /mnt/dev /dev
-mount --move /mnt/run /run
 
 umount /mnt/mnt
 umount /mnt

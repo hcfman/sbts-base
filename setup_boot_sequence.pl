@@ -28,6 +28,7 @@ sub readonly_boot_line {
     @a = grep {$_ ne "quiet" && $_ !~ "^root=" && $_ !~ "^init="} @a;
     push( @a, "root=/dev/mmcblk0p1" );
     push( @a, "init=/sbin/overlayRoot.sh" );
+    push( @a, "sbtsroot=$BOOT_PARTITION" );
 
     my $b = join( ',', @a );
     return $part1 ."APPEND " . join( " ", @a);
@@ -40,8 +41,8 @@ sub readwrite_boot_line {
     my ( $part1, $part2 ) = @_;
 
     my @a = split(/\s+/, trim( $part2) );
-    @a = grep {$_ ne "quiet" && $_ !~ "^root=" && $_ !~ "^init="} @a;
-    push( @a, "root=$BOOT_PARTITION" );
+    @a = grep {$_ ne "quiet" && $_ !~ "^init="} @a;
+    push( @a, "sbtsroot=$BOOT_PARTITION" );
 
     my $b = join( ',', @a );
     return $part1 ."APPEND " . join( " ", @a);
