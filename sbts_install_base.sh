@@ -246,7 +246,6 @@ EOF
 }
 
 copy_overlay_init() {
-    perl -pi -e "s%^rootDev=.*%rootDev=${partition_base_path}1%" "$HERE/overlayRoot.sh" || abort "Can't change the boot device in overlayRoot.sh"
     cp "$HERE/overlayRoot.sh" /sbin || abort "Can't copy $HERE/overlayRoot.sh to /sbin"
     chmod 755 /sbin/overlayRoot.sh || abort "Can't change permissions of /sbin/overlayRoot.sh"
 
