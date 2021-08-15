@@ -28,3 +28,5 @@ After permanent OS changes have been made, revert to read-only mode for operatio
 * cd sbts-bin
 * sudo ./make_readonly.sh
 * sudo reboot
+
+This release is in preparation stage
