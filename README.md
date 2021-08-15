@@ -29,4 +29,4 @@ After permanent OS changes have been made, revert to read-only mode for operatio
 * sudo ./make_readonly.sh
 * sudo reboot
 
-This release is in preparation stage
+This release is in preparation stage. i.e. it's not formally released yet as I'm working on documentation and instructional videos. It all works fine but likely you won't know what to do with it just yet.
