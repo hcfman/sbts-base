@@ -20,6 +20,17 @@ if [ "$found_init" != "/sbin/overlayRoot.sh" -a -z "$found_sbtsroot" ] ; then
     exec /lib/systemd/systemd
 fi
 
+# Mount useful device directories
+[ ! -d /proc ] && mkdir /proc
+if [ ! -e /proc/cpuinfo ] ; then
+    mount -t proc proc /proc
+fi
+
+[ ! -d /sys ] && mkdir /sys
+if [ ! -e /sys/fs ] ; then
+    mount -t sysfs sysfs /sysfs
+fi
+
 if [ "$found_init" != "/sbin/overlayRoot.sh" -a ! -z "$found_sbtsroot" ] ; then
     mkdir /mnt/newroot || fail "Can't create /mnt/newroot"
 
@@ -107,6 +118,7 @@ mount --move /mnt/dev /dev
 
 umount /mnt/mnt
 umount /mnt/proc
+umount /mnt/sys
 umount /mnt
 
 # continue with regular init
