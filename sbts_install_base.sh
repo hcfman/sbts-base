@@ -277,7 +277,7 @@ determine_platform_branch() {
             ;;
         "Jetson-AGX")
             PLATFORM_BRANCH=sbts-jetson-xavier-agx
-            nvpmodel -m 0
+            nvpmodel -m 3
 	    jetson_clocks --fan
             ;;
         *)
