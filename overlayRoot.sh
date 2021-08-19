@@ -12,9 +12,9 @@ fail(){
 	exec /bin/bash
 }
  
-found_root=$(tr '\0 ' '\n\n' < /proc/cmdline|perl -n -e 'print $1, "\n" if m%^root=(\S+)%')
-found_init=$(tr '\0 ' '\n\n' < /proc/cmdline|perl -n -e 'print $1, "\n" if m%^init=(\S+)%')
-found_sbtsroot=$(tr '\0 ' '\n\n' < /proc/cmdline|perl -n -e 'print $1, "\n" if m%^sbtsroot=(\S+)%')
+found_root=$(perl -n -e 'print $1, "\n" if m%^\s*APPEND .*\broot=(\S+)%' /boot/extlinux/extlinux.conf)
+found_init=$(perl -n -e 'print $1, "\n" if m%^\s*APPEND .*\binit=(\S+)%' /boot/extlinux/extlinux.conf)
+found_sbtsroot=$(perl -n -e 'print $1, "\n" if m%^\s*APPEND .*\bsbtsroot=(\S+)%' /boot/extlinux/extlinux.conf)
 
 if [ "$found_init" != "/sbin/overlayRoot.sh" -a -z "$found_sbtsroot" ] ; then
     exec /lib/systemd/systemd
