@@ -117,8 +117,8 @@ mount --move /mnt/sys /sys
 mount --move /mnt/dev /dev
 
 umount /mnt/mnt
-umount /mnt/proc
-umount /mnt/sys
+findmnt -n /mnt/proc > /dev/null && umount /mnt/proc
+findmnt -n /mnt/sys > /dev/null && umount /mnt/sys
 umount /mnt
 
 # continue with regular init
