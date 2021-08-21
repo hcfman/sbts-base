@@ -407,8 +407,8 @@ unmount_system_disk() {
     rmdir /tmp/mnt || abort "Failed to remove mount point /tmp/mnt"
 }
 
-make_readonly() {
-    "$SBTS_BIN/make_readonly.sh" || abort "Can't set readonly"
+make_readwrite() {
+    "$SBTS_BIN/make_readwrite.sh" || abort "Can't set readwrite"
 }
 
 disable_docker() {
@@ -468,7 +468,7 @@ disable_docker
 
 unmount_system_disk
 
-make_readonly
+make_readwrite
 
 echo ""
 echo "Installation was successful"
