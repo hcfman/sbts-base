@@ -15,13 +15,9 @@ It is installed as follows:
 
 After installation you should reboot and login. At this stage you should run the command "findmnt" and verify that at the time the overlay file system is displayed.
 
-After the first reboot the system should be in read-only mode. All writes to the OS will be written to an overlaying memory file system.
+After the first reboot the system should be in read-write mode.
 
-Permanent changes should be made in read-write mode, this is done as follows:
-
-* cd sbts-bin
-* sudo ./make_readwrite.sh
-* sudo reboot
+Permanent changes can be made in read-write mode.
 
 After permanent OS changes have been made, revert to read-only mode for operation as follows:
 
