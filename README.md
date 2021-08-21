@@ -2,7 +2,7 @@
 
 Base system for the stalkedbythestate project
 
-The project installs a robust project environment for the NVIDIA Jetson nano, NX and AGX computers. This is used for the Stalked by the state project but can be used as a base for other projects as well.
+The project installs a robust project environment for the NVIDIA Jetson nano, NX and AGX computers. This is used for the StalkedByTheState (https://github.com/hcfman/stalkedbythestate) project but can be used as a base for other projects as well.
 
 It is installed as follows:
 
