@@ -11,7 +11,7 @@ It is installed as follows:
 * Login
 * git clone https://github.com/hcfman/sbts-base.git
 * cd sbts-base
-* sudo ./sbts_install_base.sh
+* sudo -H ./sbts_install_base.sh
 
 After installation you should reboot and login. At this stage you should run the command "findmnt" and verify that at the time the overlay file system is displayed.
 
