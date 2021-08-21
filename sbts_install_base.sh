@@ -272,7 +272,7 @@ determine_platform_branch() {
             ;;
         "NVIDIA Jetson Xavier NX Developer Kit")
             PLATFORM_BRANCH=sbts-jetson-xavier-nx
-            nvpmodel -m 2
+            nvpmodel -m 8
 	    jetson_clocks --fan
             ;;
         "Jetson-AGX")
