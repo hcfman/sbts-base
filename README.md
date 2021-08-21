@@ -7,7 +7,6 @@ The project installs a robust project environment for the NVIDIA Jetson nano, NX
 It is installed as follows:
 
 * Install the latest SD card image for your system, for example, follow instructions for the Jetson Nano here: https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-devkit
-* Login
 
 ```
 git clone https://github.com/hcfman/sbts-base.git
