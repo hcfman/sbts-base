@@ -13,7 +13,9 @@ If you have a Jetson Nano, then you should disable the GUI interface first with:
 ```
 sudo systemctl set-default multi-user.target; sudo reboot
 ```
+There's not enough memory on the Nano for both running the algorithms and a GUI interface.
 
+Then you can install:
 
 ```
 git clone https://github.com/hcfman/sbts-base.git
