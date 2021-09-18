@@ -8,6 +8,13 @@ It is installed as follows:
 
 * Install the latest SD card image for your system, for example, follow instructions for the Jetson Nano here: https://developer.nvidia.com/embedded/learn/get-started-jetson-nano-devkit
 
+If you have a Jetson Nano, then you should disable the GUI interface first with:
+
+```
+sudo systemctl set-default multi-user.target; sudo reboot
+```
+
+
 ```
 git clone https://github.com/hcfman/sbts-base.git
 cd sbts-base
