@@ -58,6 +58,20 @@ if [ -z "$found_sbtsroot" ] ; then
     found_sbtsroot=$found_root
 fi
 
+# Wait up to 5 seconds for boot device to appear otherwise just fail badly
+count=0
+while [ "$count" -lt 5 ] ; do
+    if [ -e "$found_sbtsroot" ] ; then
+        echo "$found_sbtsroot found in $count seconds"
+        break
+    fi
+
+    echo "$found_sbtsroot not ready, waiting 1s"
+
+    sleep 1
+    count=`expr "$count" + 1`
+done
+
 # load module
 modprobe overlay || fail "ERROR: missing overlay kernel module"
 
