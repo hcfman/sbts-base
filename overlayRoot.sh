@@ -58,9 +58,9 @@ if [ -z "$found_sbtsroot" ] ; then
     found_sbtsroot=$found_root
 fi
 
-# Wait up to 5 seconds for boot device to appear otherwise just fail badly
+# Wait up to 30 seconds for boot device to appear otherwise just fail badly
 count=0
-while [ "$count" -lt 5 ] ; do
+while [ "$count" -lt 30 ] ; do
     if [ -e "$found_sbtsroot" ] ; then
         echo "$found_sbtsroot found in $count seconds"
         break
