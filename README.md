@@ -35,4 +35,8 @@ sudo ./make_readonly.sh
 sudo reboot
 ```
 
-This release is in preparation stage. i.e. it's not formally released yet as I'm working on documentation and instructional videos. It all works fine but likely you won't know what to do with it just yet.
+For detailed tutorials about using this software please view my YouTube channel
+
+https://www.youtube.com/channel/UCXn7Z37_xwuxLPpcPTtdNRQ
+
+Kim Hendrikse
