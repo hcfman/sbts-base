@@ -116,6 +116,9 @@ create_file_systems() {
         fi
     done
 
+    echo "Setting swap partition"
+    echo ""
+
     (fdisk $disk_device_path <<EOF
 t
 3
@@ -124,6 +127,10 @@ w
 q
 EOF
     ) || abort "Can't set partition 3 to type linux swap"
+
+    echo "Creating swap"
+    echo ""
+
     mkswap $disk_device_path || abort "Can't create swap on $partition_base_path"
     partprobe
 }
