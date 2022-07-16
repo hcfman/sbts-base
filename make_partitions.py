@@ -84,10 +84,10 @@ create_partition(size=OS_PARTITION_SIZE, disk=disk, partedDevice=partedDevice)
 #
 create_partition(size=CONFIG_PARTITION_SIZE, disk=disk, partedDevice=partedDevice)
 
-
 #
 # swap partition - provide swap even though we don't want to use it perse
 #
+
 create_partition(size=SWAP_PARTITION_SIZE, disk=disk, partedDevice=partedDevice)
 #
 # third partition - The rest of the disk, to be used as a data partition
