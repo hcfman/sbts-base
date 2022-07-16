@@ -107,7 +107,7 @@ create_file_systems() {
     echo ""
 
     echo partition_base_path = $partition_base_path
-    for partition_path in ${partition_base_path}?* ; do
+    for partition_path in ${partition_base_path}{1,2,4} ; do
         echo "mkfs -t ext4 $partition_path"
         echo ""
         if ! mkfs -t ext4 "$partition_path" ; then
@@ -115,6 +115,17 @@ create_file_systems() {
             exit 1
         fi
     done
+
+    (fdisk $disk_device_path <<EOF
+t
+3
+19
+w
+q
+EOF
+    ) || abort "Can't set partition 3 to type linux swap"
+    mkswap $disk_device_path || abort "Can't create swap on $partition_base_path"
+    partprobe
 }
 
 label_partitions() {
@@ -131,7 +142,8 @@ label_partitions() {
 
     e2label "$partition_base_path"1 SbtsRoot
     e2label "$partition_base_path"2 SbtsConfig
-    e2label "$partition_base_path"3 SbtsDisk
+    e2label "$partition_base_path"3 SbtsSwap
+    e2label "$partition_base_path"4 SbtsDisk
 }
 
 
@@ -387,7 +399,8 @@ update_fstab() {
 # <file system> <mount point>             <type>          <options>                               <dump> <pass>
 ${partition_base_path}1            /                     ext4           defaults                                     0 1
 ${partition_base_path}2     /home/sbts/config     ext4           noatime                                     0 2
-${partition_base_path}3       /home/sbts/disk       ext4           noatime                                     0 2
+${partition_base_path}3       swap       swap           defaults                                     0 0
+${partition_base_path}4       /home/sbts/disk       ext4           noatime                                     0 2
 #the original root mount has been removed by overlayRoot.sh
 #this is only a temporary modification, the original fstab
 #stored on the disk can be found in /ro/etc/fstab

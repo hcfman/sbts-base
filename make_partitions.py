@@ -9,6 +9,8 @@ import parted
 VERY_BIG_SIZE = 10000
 # Partition size in GB
 OS_PARTITION_SIZE = 50
+CONFIG_PARTITION_SIZE = 5
+SWAP_PARTITION_SIZE = 16
 total_size = 0
 
 #
@@ -80,8 +82,13 @@ create_partition(size=OS_PARTITION_SIZE, disk=disk, partedDevice=partedDevice)
 #
 # Config partition - Small partition for updateable configuration
 #
-create_partition(size=5, disk=disk, partedDevice=partedDevice)
+create_partition(size=CONFIG_PARTITION_SIZE, disk=disk, partedDevice=partedDevice)
 
+
+#
+# swap partition - provide swap even though we don't want to use it perse
+#
+create_partition(size=SWAP_PARTITION_SIZE, disk=disk, partedDevice=partedDevice)
 #
 # third partition - The rest of the disk, to be used as a data partition
 #
