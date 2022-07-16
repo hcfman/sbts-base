@@ -131,7 +131,7 @@ EOF
     echo "Creating swap"
     echo ""
 
-    mkswap $disk_device_path || abort "Can't create swap on $partition_base_path"
+    mkswap ${partition_base_path}3 || abort "Can't create swap on ${partition_base_path}3"
     partprobe
 }
 
