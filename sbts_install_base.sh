@@ -149,7 +149,6 @@ label_partitions() {
 
     e2label "$partition_base_path"1 SbtsRoot
     e2label "$partition_base_path"2 SbtsConfig
-    e2label "$partition_base_path"3 SbtsSwap
     e2label "$partition_base_path"4 SbtsDisk
 }
 
