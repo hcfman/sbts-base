@@ -106,6 +106,8 @@ create_file_systems() {
     echo "Creating file systems"
     echo ""
 
+    partprobe
+
     echo partition_base_path = $partition_base_path
     for partition_path in ${partition_base_path}{1,2,4} ; do
         echo "mkfs -t ext4 $partition_path"
@@ -132,7 +134,6 @@ EOF
     echo ""
 
     mkswap ${partition_base_path}3 || abort "Can't create swap on ${partition_base_path}3"
-    partprobe
 }
 
 label_partitions() {
