@@ -106,6 +106,7 @@ create_file_systems() {
     echo "Creating file systems"
     echo ""
 
+    sleep 2
     partprobe
 
     echo partition_base_path = $partition_base_path
