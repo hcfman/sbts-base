@@ -287,17 +287,17 @@ determine_platform_branch() {
         "NVIDIA Jetson Nano Developer Kit")
             PLATFORM_BRANCH=sbts-jetson-nano
             nvpmodel -m 0
-	    jetson_clocks
+            jetson_clocks
             ;;
         "NVIDIA Jetson Xavier NX Developer Kit")
             PLATFORM_BRANCH=sbts-jetson-xavier-nx
             nvpmodel -m 8
-	    jetson_clocks --fan
+            jetson_clocks --fan
             ;;
         "Jetson-AGX")
             PLATFORM_BRANCH=sbts-jetson-xavier-agx
             nvpmodel -m 3
-	    jetson_clocks --fan
+            jetson_clocks --fan
             ;;
         *)
             abort "Cannot determine the platform type to build darknet for"
@@ -413,7 +413,7 @@ ${partition_base_path}4       /home/sbts/disk       ext4           noatime      
 #stored on the disk can be found in /ro/etc/fstab
 EOF
     if [ $? -ne 0 ] ; then
-	abort "Could not create new fstab"
+        abort "Could not create new fstab"
     fi
 
     perl -pi -e "s%/home/sbts/%$SUDO_USER_HOME/%" /tmp/mnt/etc/fstab || abort "Can't update fstab to the before sudo user"
