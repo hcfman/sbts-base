@@ -305,6 +305,11 @@ determine_platform_branch() {
             nvpmodel -m 3
             jetson_clocks --fan
             ;;
+        "NVIDIA Orin Nano Developer Kit")
+            PLATFORM_BRANCH=sbts-jetson-orin-nano
+            nvpmodel -m 0
+            jetson_clocks --fan
+            ;;
         *)
             abort "Cannot determine the platform type to build darknet for"
             ;;
