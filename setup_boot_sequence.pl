@@ -8,6 +8,18 @@ if ( $#ARGV != 1 ) {
 my $BOOT_PARTITION = $ARGV[0];
 my $PLATFORM_BRANCH = $ARGV[1];
 
+my $SD_BLOCK_DEVICE = "";
+
+sub check_for_sd {
+    if ( -e "/dev/mmcblk0" ) {
+        $SD_BLOCK_DEVICE = "/dev/mmcblk0"
+    } elsif (-e "/dev/mmcblk1" ) {
+        $SD_BLOCK_DEVICE = "/dev/mmcblk1"
+    } else {
+        exit 1;
+    }
+}
+
 sub trim {
     my ( $l ) = @_;
 
@@ -26,7 +38,7 @@ sub readonly_boot_line {
 
     my @a = split(/\s+/, trim( $part2) );
     @a = grep {$_ ne "quiet" && $_ !~ "^root=" && $_ !~ "^init="} @a;
-    push( @a, "root=/dev/mmcblk0p1" );
+    push( @a, "root=${SD_BLOCK_DEVICE}p1" );
     push( @a, "init=/sbin/overlayRoot.sh" );
     push( @a, "sbtsroot=$BOOT_PARTITION" );
 

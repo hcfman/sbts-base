@@ -11,6 +11,16 @@ abort() {
     exit 1
 }
 
+check_for_sd() {
+    if [ -e "/dev/mmcblk0" ] ; then
+        SD_BLOCK_DEVICE="/dev/mmcblk0"
+    elif [ -e "/dev/mmcblk1" ] ; then
+        SD_BLOCK_DEVICE="/dev/mmcblk1"
+    else
+        abort 'Can't find the usual SD card device files (Either /dev/mmcblk0 or /dev/mmcblk1)"
+    fi
+}
+
 determine_type() {
     COMMAND=$(basename $0)
     if [ "$COMMAND" == "make_readonly.sh" ] ; then
@@ -25,7 +35,7 @@ determine_type() {
 }
 
 check_need_to_mount() {
-    if [ "$(findmnt -n / | awk '{print $2}')" == "/dev/mmcblk0p1" ] ; then
+    if [ "$(findmnt -n / | awk '{print $2}')" == "${SD_BLOCK_DEVICE}p1" ] ; then
 	NEED_TO_MOUNT=
     else
 	NEED_TO_MOUNT=1
@@ -42,6 +52,8 @@ sanity_check() {
     fi
 }
 
+check_for_sd
+
 check_need_to_mount
 
 sanity_check
@@ -52,7 +64,7 @@ if [ ! "$NEED_TO_MOUNT" ] ; then
     cp "/boot/extlinux/$CONF_FILE" /boot/extlinux/extlinux.conf
 else
     mkdir -p /tmp/mnt
-    mount /dev/mmcblk0p1 /tmp/mnt || exit 1
+    mount "$SD_BLOCK_DEVICE" /tmp/mnt || exit 1
 
     cp "/tmp/mnt/boot/extlinux/$CONF_FILE" /tmp/mnt/boot/extlinux/extlinux.conf
 
