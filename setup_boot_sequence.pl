@@ -11,10 +11,10 @@ my $PLATFORM_BRANCH = $ARGV[1];
 my $SD_BLOCK_DEVICE = "";
 
 sub check_for_sd {
-    if ( -e "/dev/mmcblk0" ) {
-        $SD_BLOCK_DEVICE = "/dev/mmcblk0"
-    } elsif (-e "/dev/mmcblk1" ) {
+    if ( -e "/dev/mmcblk1" ) {
         $SD_BLOCK_DEVICE = "/dev/mmcblk1"
+    } elsif (-e "/dev/mmcblk0" ) {
+        $SD_BLOCK_DEVICE = "/dev/mmcblk0"
     } else {
         exit 1;
     }

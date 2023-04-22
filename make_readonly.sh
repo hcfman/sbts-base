@@ -12,10 +12,10 @@ abort() {
 }
 
 check_for_sd() {
-    if [ -e "/dev/mmcblk0" ] ; then
-        SD_BLOCK_DEVICE="/dev/mmcblk0"
-    elif [ -e "/dev/mmcblk1" ] ; then
+    if [ -e "/dev/mmcblk1" ] ; then
         SD_BLOCK_DEVICE="/dev/mmcblk1"
+    elif [ -e "/dev/mmcblk0" ] ; then
+        SD_BLOCK_DEVICE="/dev/mmcblk0"
     else
         abort 'Can't find the usual SD card device files (Either /dev/mmcblk0 or /dev/mmcblk1)"
     fi
