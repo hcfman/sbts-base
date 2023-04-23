@@ -64,7 +64,7 @@ if [ ! "$NEED_TO_MOUNT" ] ; then
     cp "/boot/extlinux/$CONF_FILE" /boot/extlinux/extlinux.conf
 else
     mkdir -p /tmp/mnt
-    mount "$SD_BLOCK_DEVICE" /tmp/mnt || exit 1
+    mount "${SD_BLOCK_DEVICE}p1" /tmp/mnt || exit 1
 
     cp "/tmp/mnt/boot/extlinux/$CONF_FILE" /tmp/mnt/boot/extlinux/extlinux.conf
 
