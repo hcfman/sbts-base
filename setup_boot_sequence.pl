@@ -112,5 +112,6 @@ if ( 0 ) {
 }
 close( $in );
 
+check_for_sd();
 create_readonly_conf( $l );
 create_readwrite_conf( $l );
