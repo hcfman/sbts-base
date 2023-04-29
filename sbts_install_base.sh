@@ -300,7 +300,7 @@ determine_platform_branch() {
             nvpmodel -m 3
             jetson_clocks --fan
             ;;
-        "Jetson AGX Orin"
+        "Jetson AGX Orin")
             PLATFORM_BRANCH=sbts-jetson-orin-agx
             nvpmodel -m 3
             jetson_clocks --fan
