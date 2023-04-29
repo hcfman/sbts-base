@@ -304,6 +304,7 @@ determine_platform_branch() {
             PLATFORM_BRANCH=sbts-jetson-orin-agx
             nvpmodel -m 3
             jetson_clocks --fan
+            ;;
         "NVIDIA Orin Nano Developer Kit")
             PLATFORM_BRANCH=sbts-jetson-orin-nano
             nvpmodel -m 0
