@@ -108,6 +108,7 @@ create_file_systems() {
 
     sleep 2
     partprobe $disk_device_path
+    sleep 2
 
     echo partition_base_path = $partition_base_path
     for partition_path in ${partition_base_path}{1,2,4} ; do
