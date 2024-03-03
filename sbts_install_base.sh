@@ -414,11 +414,6 @@ copy_system_disk_to_SSD() {
 }
 
 update_fstab() {
-    local CONFIG_PATH, DISK_PATH, SWAP_PATH
-
-    CONFIG_PATH=$(blkid -t LABEL=SbtsConfig -o device)
-    DISK_PATH=$(blkid -t LABEL=SbtsDisk -o device)
-    SWAP_PATH=$(blkid -t TYPE=swap -o device |fgrep -i /dev/nvme)
     cat > /tmp/mnt/etc/fstab <<EOF
 # <file system> <mount point>             <type>          <options>                               <dump> <pass>
 ${partition_base_path}1            /                     ext4           defaults                                     0 1
@@ -469,6 +464,10 @@ fi
 if [ ! "$SUDO_USER" -o "$SUDO_USER" == "root" ] ; then
     abort "Please execute this script simply as sudo $(basename $0)"
 fi
+
+CONFIG_PATH=$(blkid -t LABEL=SbtsConfig -o device)
+DISK_PATH=$(blkid -t LABEL=SbtsDisk -o device)
+SWAP_PATH=$(blkid -t TYPE=swap -o device |fgrep -i /dev/nvme)
 
 sanity_check
 
