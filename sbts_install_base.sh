@@ -414,12 +414,17 @@ copy_system_disk_to_SSD() {
 }
 
 update_fstab() {
+    local CONFIG_PATH, DISK_PATH, SWAP_PATH
+
+    CONFIG_PATH=$(blkid -t LABEL=SbtsConfig -o device)
+    DISK_PATH=$(blkid -t LABEL=SbtsDisk -o device)
+    SWAP_PATH=$(blkid -t TYPE=swap -o device |fgrep -i /dev/nvme)
     cat > /tmp/mnt/etc/fstab <<EOF
 # <file system> <mount point>             <type>          <options>                               <dump> <pass>
 ${partition_base_path}1            /                     ext4           defaults                                     0 1
-${partition_base_path}2     /home/sbts/config     ext4           noatime                                     0 2
-${partition_base_path}3       swap       swap           defaults                                     0 0
-${partition_base_path}4       /home/sbts/disk       ext4           noatime                                     0 2
+$CONFIG_PATH     /home/sbts/config     ext4           noatime                                     0 2
+$SWAP_PATH       swap       swap           defaults                                     0 0
+$DISK_PATH       /home/sbts/disk       ext4           noatime                                     0 2
 #the original root mount has been removed by overlayRoot.sh
 #this is only a temporary modification, the original fstab
 #stored on the disk can be found in /ro/etc/fstab
